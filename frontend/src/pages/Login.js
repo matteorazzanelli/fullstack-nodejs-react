@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import Validation from '../components/LoginValidation'
+
+import axios from 'axios'
+
 
 export default function Login() {
   
@@ -15,9 +18,22 @@ export default function Login() {
     setValues(prev => ({...prev, [e.target.name]: [e.target.value]}));
   }
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors(Validation(values))
+    setErrors(Validation(values));
+    console.log('premutttoooooo')
+    console.log(errors)
+    console.log(values)
+    if(errors.email === '' && errors.password === ''){
+      console.log('inviaaa')
+      const res = (await axios.post('http://localhost:5000/login', values)).data;
+      console.log('rispostaaaaa', res)
+      if(res.success)
+        navigate('/home');
+      else
+        alert('no record exist')
+    }
   }
 
   return (
