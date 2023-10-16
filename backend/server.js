@@ -3,7 +3,7 @@ require('dotenv').config({ path: '.env' });
 // create express instance
 const express = require('express');
 const app = express();
-const cors = require('cors')
+const cors = require('cors') // to handle the fact that request comes from different port
 
 //middleware to handle req.body
 app.use(cors());
@@ -42,6 +42,39 @@ app.post('/signup', async (req, res) => {
   console.log('OKOKOKOKOK')
   return res.status(201).json({success: true, content: queryResult.rows});
 })
+
+app.post('/login', async (req, res) => {
+  console.log('ARRIVATA RICHIESTAAA')
+  const queryResult =  {
+    rows: {}, 
+    fields:{}, 
+    error:{}
+  };
+  const values = [req.body.email[0], req.body.password[0]]
+  console.log(values);
+  try{
+    const [rows, fields] = (await realConnection.execute(
+      'SELECT * FROM users WHERE  `email` = ? AND `password` = ?',
+      values));
+    console.log(rows)
+    if(rows.length > 0){
+      console.log('invia 200')
+      return res.status(200).json({success: true, content: rows});
+    }
+    else{
+      console.log('invia 404')
+      return res.status(404).json({success: false, content: []});
+    }
+  }
+  catch(error){
+    console.log('ERROREEEE')
+    console.log(error)
+    queryResult.error = error.sqlMessage;
+    return res.status(400).json({success: false, content: queryResult.error});
+  }
+  console.log('invia NIENTE')
+})
+
 
 app.get('/', (req, res) => {
   return res.status(200).json({success: true, content: 'yeeee'});
