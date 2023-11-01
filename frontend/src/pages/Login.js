@@ -15,7 +15,7 @@ export default function Login() {
   const [errors, setErrors] = useState({})
 
   const handleChange = (e)  => {
-    setValues(prev => ({...prev, [e.target.name]: [e.target.value]}));
+    setValues(prev => ({...prev, [e.target.name]: e.target.value}));
   }
 
   const navigate = useNavigate();
@@ -27,9 +27,9 @@ export default function Login() {
     console.log(values)
     if(errors.email === '' && errors.password === ''){
       console.log('inviaaa')
-      const res = (await axios.post('http://localhost:5000/login', values)).data;
-      console.log('rispostaaaaa', res)
-      if(res.success)
+      const res = (await axios.post('http://localhost:5000/login', {"content": values}));
+      console.log('rispostaaaaa', res.data)
+      if(res.data.success)
         navigate('/home');
       else
         alert('no record exist')

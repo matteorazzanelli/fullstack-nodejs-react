@@ -15,7 +15,7 @@ export default function Signup() {
   const [errors, setErrors] = useState({})
 
   const handleChange = (e)  => {
-    setValues(prev => ({...prev, [e.target.name]: [e.target.value]}));
+    setValues(prev => ({...prev, [e.target.name]: e.target.value}));
   }
 
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ export default function Signup() {
     e.preventDefault();
     setErrors(Validation(values))
     if(errors.name === '' && errors.email === '' && errors.password === ''){
-      const res = (await axios.post('http://localhost:5000/signup', values)).data;
+      const res = (await axios.post('http://localhost:5000/signup', {"content": values})).data;
 
       navigate('/');
     }
