@@ -15,21 +15,22 @@ export default function Login() {
   const [errors, setErrors] = useState({})
 
   const handleChange = (e)  => {
-    setValues(prev => ({...prev, [e.target.name]: e.target.value}));
+    setValues({...values, [e.target.name]: e.target.value});
   }
 
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors(Validation(values));
+    const tmpErrors = Validation(values);
+    setErrors(tmpErrors);
     console.log('premutttoooooo')
-    console.log(errors)
+    console.log(tmpErrors)
     console.log(values)
-    if(errors.email === '' && errors.password === ''){
+    if(tmpErrors.email === '' && tmpErrors.password === ''){ //FIXME: this 
       console.log('inviaaa')
       const res = (await axios.post('http://localhost:5000/login', {"content": values}));
       console.log('rispostaaaaa', res.data)
-      if(res.data.success)
+      if(res.data.content.length > 0)
         navigate('/home');
       else
         alert('no record exist')
