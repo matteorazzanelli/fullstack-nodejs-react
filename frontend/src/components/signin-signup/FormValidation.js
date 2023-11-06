@@ -1,4 +1,4 @@
-function Validation(values){
+export default function Validation(values){
 
   let error = {}
 
@@ -35,4 +35,3 @@ function Validation(values){
   return error;
 }
 
-export default Validation;
