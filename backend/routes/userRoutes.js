@@ -7,9 +7,9 @@ const { userController } = require('../controllers/userController');
 //middleware to handle req.body
 router.use(express.json());
 
-router.post('/login', (req, res) => {
+router.post('/signin', (req, res) => {
   const {content} = req.body;
-  return userController.loginUser(content, res);
+  return userController.signinUser(content, res);
 })
 
 router.post('/signup', (req, res) => {

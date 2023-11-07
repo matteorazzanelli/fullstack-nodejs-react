@@ -9,7 +9,7 @@ const { GeneralController } = require('./generalController');
 
 class UserController extends GeneralController{
 
-  loginUser = async (content, res) => {
+  signinUser = async (content, res) => {
     const result = await um.select(content, 'users');
     console.log(result)
     this.setCode(!result.error ? 200 : 404);
