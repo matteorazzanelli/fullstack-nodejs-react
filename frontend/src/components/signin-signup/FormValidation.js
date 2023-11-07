@@ -1,16 +1,23 @@
-export default function Validation(values){
+export default function Validation(values, action){
 
   let error = {}
 
   const email_pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   const password_pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/
 
-  if(!values.name){
-    error.name = 'Name is empty'
+  // the following are vaid only in sign up process
+  if(action === 'Sign Up'){
+    if(!values.name){
+      error.name = 'Name is empty'
+    }
+    else{
+      error.name = ''
+    }
+
+    error.terms = values.terms ? '' : 'Check it!';
   }
-  else{
-    error.name = ''
-  }
+
+  
 
   if(!values.email){
     error.email = 'Email is empty'
@@ -31,6 +38,8 @@ export default function Validation(values){
   else{
     error.password = ''
   }
+
+  
 
   return error;
 }

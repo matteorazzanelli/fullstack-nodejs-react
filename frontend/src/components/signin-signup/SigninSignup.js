@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import './SigninSignup.css'
 import Validation from './FormValidation'
@@ -17,30 +17,52 @@ export default function Login() {
   const [values, setValues] = useState({
     name: '',
     email: '',
-    password: ''
+    password: '',
+    terms: false
   });
   const [errors, setErrors] = useState({})
 
   const handleChange = (e)  => {
-    setValues({...values, [e.target.name]: e.target.value});
+    if(e.target.name === 'terms')
+      setValues({...values, [e.target.name]: e.target.checked});
+    else
+      setValues({...values, [e.target.name]: e.target.value});
   }
 
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const tmpErrors = Validation(values);
+    console.log(action)
+    const tmpErrors = Validation(values, action);
     setErrors(tmpErrors);
     console.log('premutttoooooo')
     console.log(tmpErrors)
     console.log(values)
-    if(tmpErrors.name === '' && tmpErrors.email === '' && tmpErrors.password === ''){ //FIXME: this 
-      console.log('inviaaa')
-      const res = (await axios.post('http://localhost:5000/login', {"content": values}));
-      console.log('rispostaaaaa', res.data)
-      if(res.data.content.length > 0)
-        navigate('/home');
-      else
-        alert('no record exist')
+    console.log(Object.values(tmpErrors))
+    if(action === 'Sign Up'){
+      if(tmpErrors.name==='' && tmpErrors.email==='' && tmpErrors.password==='' && tmpErrors.terms===''){ 
+        console.log('inviaaa')
+        const {terms, ...objToSend} = values;
+        const res = (await axios.post('http://localhost:5000/signup', {"content": objToSend}));
+        console.log('rispostaaaaa', res.data)
+        if(res.data.content.affectedRows > 0){
+          setAction('Sign In');
+        }
+        else
+          alert('error in adding record');
+      }
+    }
+    else{
+      if(tmpErrors.email === '' && tmpErrors.password === ''){
+        console.log('inviaaa')
+        const {terms, name, ...objToSend} = values;
+        const res = (await axios.post('http://localhost:5000/signin', {"content": objToSend}));
+        console.log('rispostaaaaa', res.data)
+        if(res.data.content.length > 0)
+          navigate('/home');
+        else
+          alert('no record exist');
+      }
     }
   }
 
@@ -51,10 +73,11 @@ export default function Login() {
         <div className='underline'></div>
       </div>
       <div className='inputs'>
-        {action==='Login'?<div></div>:
+        {action==='Sign In'?<div></div>:
         <div className='input'>
           <img src={user_icon} alt='' />
-          <input type='text' 
+          <input 
+            type='text' 
             placeholder='Name' 
             name='name' 
             value={values.name} 
@@ -63,7 +86,8 @@ export default function Login() {
         {errors.name && <span className='error-msg'>{errors.name}</span>}
         <div className='input'>
           <img src={email_icon} alt='' />
-          <input type='email' 
+          <input 
+            type='email' 
             placeholder='Email' 
             name='email' 
             value={values.email} 
@@ -72,7 +96,8 @@ export default function Login() {
         {errors.email && <span className='error-msg'>{errors.email}</span>}
         <div className='input'>
           <img src={password_icon} alt='' />
-          <input type='password' 
+          <input 
+            type='password' 
             placeholder='Password' 
             name='password' 
             value={values.password} 
@@ -80,18 +105,25 @@ export default function Login() {
         </div>
         {errors.password && <span className='error-msg'>{errors.password}</span>}
       </div>
+      {action==='Sign In'?<div></div>:
       <div className='terms-policy'>
-        <input type='checkbox' id='terms' name='terms' />
+        <input 
+          type='checkbox'
+          id='terms'
+          name='terms' 
+          checked={values.terms}
+          onChange={handleChange}/>
         <label htmlFor='terms'>You agree to our terms and policies.</label>
-      </div>
+      </div>}
+      {errors.terms && <span className='error-msg'>{errors.terms}</span>}
       <div className='switch-btns-container'>
-        <div className={action==='Login'?'switch-btn gray':'switch-btn'}
-          onClick={()=>{setAction('Sign Up')}}>
+        <div className={action==='Sign Up'?'switch-btn' : 'switch-btn gray'}
+          onClick={()=>{setAction('Sign Up');setErrors({});}}>
             Sign Up
         </div>
         <div className={action==='Sign Up'?'switch-btn gray':'switch-btn'} 
-          onClick={()=>{setAction('Login')}}>
-            Login
+          onClick={()=>{setAction('Sign In');setErrors({});}}>
+            Sign In
         </div>
       </div>
       <div className='submit-btn' onClick={handleSubmit}>
