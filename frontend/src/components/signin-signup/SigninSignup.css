@@ -49,8 +49,9 @@
   border-radius: 6px;
 }
 
-.input img {
-  margin: 0px 30px;
+.input .img {
+  margin: 0px 10px;
+  color: #797979;
 }
 .input input {
   height: 50px;

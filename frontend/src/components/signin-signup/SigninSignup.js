@@ -5,10 +5,8 @@ import './SigninSignup.css'
 import Validation from './FormValidation'
 import axios from 'axios'
 
-
-import user_icon from '../../images/person.png'
-import email_icon from '../../images/email.png'
-import password_icon from '../../images/password.png'
+import { MdMail, MdPerson2 } from "react-icons/md";
+import { BiSolidLockAlt } from "react-icons/bi";
 
 export default function Login() {
 
@@ -32,32 +30,24 @@ export default function Login() {
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(action)
     const tmpErrors = Validation(values, action);
     setErrors(tmpErrors);
-    console.log('premutttoooooo')
-    console.log(tmpErrors)
-    console.log(values)
-    console.log(Object.values(tmpErrors))
     if(action === 'Sign Up'){
       if(tmpErrors.name==='' && tmpErrors.email==='' && tmpErrors.password==='' && tmpErrors.terms===''){ 
-        console.log('inviaaa')
         const {terms, ...objToSend} = values;
+        objToSend.password = 
         const res = (await axios.post('http://localhost:5000/signup', {"content": objToSend}));
-        console.log('rispostaaaaa', res.data)
         if(res.data.content.affectedRows > 0){
           setAction('Sign In');
         }
         else
-          alert('error in adding record');
+          alert('email is already in use');
       }
     }
     else{
       if(tmpErrors.email === '' && tmpErrors.password === ''){
-        console.log('inviaaa')
         const {terms, name, ...objToSend} = values;
         const res = (await axios.post('http://localhost:5000/signin', {"content": objToSend}));
-        console.log('rispostaaaaa', res.data)
         if(res.data.content.length > 0)
           navigate('/home');
         else
@@ -75,7 +65,8 @@ export default function Login() {
       <div className='inputs'>
         {action==='Sign In'?<div></div>:
         <div className='input'>
-          <img src={user_icon} alt='' />
+          <div className='img'><MdPerson2 size={30}></MdPerson2></div>
+          {/* <img src={} alt='' /> */}
           <input 
             type='text' 
             placeholder='Name' 
@@ -85,7 +76,8 @@ export default function Login() {
         </div>}
         {errors.name && <span className='error-msg'>{errors.name}</span>}
         <div className='input'>
-          <img src={email_icon} alt='' />
+          {/* <img src={email_icon} alt='' /> */}
+          <div className='img'><MdMail size={30}></MdMail></div>
           <input 
             type='email' 
             placeholder='Email' 
@@ -95,7 +87,8 @@ export default function Login() {
         </div>
         {errors.email && <span className='error-msg'>{errors.email}</span>}
         <div className='input'>
-          <img src={password_icon} alt='' />
+          {/* <img src={password_icon} alt='' /> */}
+          <div className='img'><BiSolidLockAlt size={30}></BiSolidLockAlt></div>
           <input 
             type='password' 
             placeholder='Password' 
