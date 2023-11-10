@@ -7,13 +7,18 @@ const { userController } = require('../controllers/userController');
 //middleware to handle req.body
 router.use(express.json());
 
-router.post('/signin', (req, res) => {
+// custom middleware
+const {signupMiddleware, signinMiddleware} = require('../middleware/userMiddleware')
+
+router.post('/signin', [signinMiddleware], (req, res) => {
   const {content} = req.body;
+  console.log(content)
   return userController.signinUser(content, res);
 })
 
-router.post('/signup', (req, res) => {
+router.post('/signup', [signupMiddleware], (req, res) => {
   const {content} = req.body;
+  console.log(content)
   return userController.signupUser(content, res);
 })
 
