@@ -6,6 +6,11 @@ class UserModel extends GeneralModel {
     super(connection);
     console.log('user model')
   }
+
+  // async insert(content, table){
+  //   // check if a user with the same email already exist in DB
+  //   super.insert(content, table);
+  // }
   
 }
 

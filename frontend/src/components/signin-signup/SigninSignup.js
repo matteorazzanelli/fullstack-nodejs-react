@@ -35,7 +35,6 @@ export default function Login() {
     if(action === 'Sign Up'){
       if(tmpErrors.name==='' && tmpErrors.email==='' && tmpErrors.password==='' && tmpErrors.terms===''){ 
         const {terms, ...objToSend} = values;
-        objToSend.password = 
         const res = (await axios.post('http://localhost:5000/signup', {"content": objToSend}));
         if(res.data.content.affectedRows > 0){
           setAction('Sign In');

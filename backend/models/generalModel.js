@@ -80,7 +80,6 @@ class GeneralModel {
 
   async insert(content, table){
     // use a prepared statement to avoid SQL injection
-    console.log(content)
     let k = Object.keys(content);
     let values = Object.values(content);
     let props = "(" + k.join(", ") + ")";
