@@ -35,22 +35,19 @@ export default function Login() {
     if(action === 'Sign Up'){
       if(tmpErrors.name==='' && tmpErrors.email==='' && tmpErrors.password==='' && tmpErrors.terms===''){ 
         const {terms, ...objToSend} = values;
-        const res = (await axios.post('http://localhost:5000/signup', {"content": objToSend}));
-        if(res.data.content.affectedRows > 0){
-          setAction('Sign In');
-        }
-        else
-          alert('email is already in use');
+        (await axios.post('http://localhost:5000/signup', {"content": objToSend})
+          .then(function(response){setAction('Sign In');console.log('ok')})
+          .catch(function(error){alert('email is already in use')})
+          .finally(function(){setValues({...values, password: ''})}))
       }
     }
     else{
       if(tmpErrors.email === '' && tmpErrors.password === ''){
         const {terms, name, ...objToSend} = values;
-        const res = (await axios.post('http://localhost:5000/signin', {"content": objToSend}));
-        if(res.data.content.length > 0)
-          navigate('/home');
-        else
-          alert('no record exist');
+        (await axios.post('http://localhost:5000/signin', {"content": objToSend})
+          .then(function(response){navigate('/home');console.log('ok')})
+          .catch(function(error){alert('no record exist')})
+          .finally(function(){setValues({...values, password: ''})}))
       }
     }
   }
@@ -65,7 +62,6 @@ export default function Login() {
         {action==='Sign In'?<div></div>:
         <div className='input'>
           <div className='img'><MdPerson2 size={30}></MdPerson2></div>
-          {/* <img src={} alt='' /> */}
           <input 
             type='text' 
             placeholder='Name' 
@@ -75,7 +71,6 @@ export default function Login() {
         </div>}
         {errors.name && <span className='error-msg'>{errors.name}</span>}
         <div className='input'>
-          {/* <img src={email_icon} alt='' /> */}
           <div className='img'><MdMail size={30}></MdMail></div>
           <input 
             type='email' 
@@ -86,7 +81,6 @@ export default function Login() {
         </div>
         {errors.email && <span className='error-msg'>{errors.email}</span>}
         <div className='input'>
-          {/* <img src={password_icon} alt='' /> */}
           <div className='img'><BiSolidLockAlt size={30}></BiSolidLockAlt></div>
           <input 
             type='password' 
