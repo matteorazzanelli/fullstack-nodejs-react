@@ -10,7 +10,7 @@ class GeneralController{
   setSuccess(success){this.success = success;}
   setContent(content){this.content = content;}
 
-  renderApi(res){ // only json, no front-end
+  renderApi(res){
     return res.status(this.statusCode)
       .json({success: this.success, content: this.content});
   }
