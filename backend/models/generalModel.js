@@ -27,7 +27,7 @@ class GeneralModel {
     let keys = Object.keys(content);
     let values = Object.values(content);
     let props = keys.join(' = ? and ') + ' = ?';
-    console.log(props, values);
+    console.log('GenearlModel : ', props, values);
     try{
       [this.queryResult.rows, this.queryResult.fields] = 
         (await this.connection.query(`SELECT * FROM ${table} WHERE ${props}`, values));
@@ -84,7 +84,7 @@ class GeneralModel {
     let values = Object.values(content);
     let props = "(" + k.join(", ") + ")";
     let placeholder = '('+values.map((item)=>{return '?'})+')';
-    console.log(props, placeholder, values)
+    console.log('GenearlModel : ', props, placeholder, values)
     try{
       [this.queryResult.rows, this.queryResult.fields] = 
         (await this.connection.execute(

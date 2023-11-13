@@ -14,13 +14,13 @@ router.use(userMiddleware);
 
 router.post('/signin', (req, res) => {
   const {content} = req.body;
-  console.log(content)
+  console.log('UserRoutes : ', content)
   return userController.signinUser(content, res);
 })
 
 router.post('/signup', (req, res) => {
   const {content} = req.body;
-  console.log(content)
+  console.log('UserRoutes : ', content)
   return userController.signupUser(content, res);
 })
 
