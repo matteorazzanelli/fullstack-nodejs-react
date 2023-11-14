@@ -36,7 +36,10 @@ export default function Login() {
       if(tmpErrors.name==='' && tmpErrors.email==='' && tmpErrors.password==='' && tmpErrors.terms===''){ 
         const {terms, ...objToSend} = values;
         (await axios.post('http://localhost:5000/signup', {"content": objToSend})
-          .then(function(response){setAction('Sign In');console.log('ok')})
+          .then(function(response){
+            setAction('Sign In');
+            console.log('ok')
+          })
           .catch(function(error){alert('email is already in use')})
           .finally(function(){setValues({...values, password: ''})}))
       }
@@ -45,7 +48,12 @@ export default function Login() {
       if(tmpErrors.email === '' && tmpErrors.password === ''){
         const {terms, name, ...objToSend} = values;
         (await axios.post('http://localhost:5000/signin', {"content": objToSend})
-          .then(function(response){navigate('/home');console.log('ok')})
+          .then(function(response){
+            console.log(values);
+            localStorage.setItem('user-info', JSON.stringify(values.email))
+            navigate('/home');
+            console.log('ok')
+          })
           .catch(function(error){alert('no record exist')})
           .finally(function(){setValues({...values, password: ''})}))
       }
