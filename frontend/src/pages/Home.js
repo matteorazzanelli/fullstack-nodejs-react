@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
+import RobotWrapper from '../components/robot/RobotWrapper';
+
 export default function Home() {
 
   const navigate = useNavigate();
@@ -15,6 +17,7 @@ export default function Home() {
   return (
     <>
       <div>Hi, {user}</div>
+      <RobotWrapper/>
       <div className='submit-btn' onClick={logout}>
         Logout
       </div>
