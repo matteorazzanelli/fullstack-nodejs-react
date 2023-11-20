@@ -6,8 +6,6 @@ export default function EditRobotForm({editRobot, robot}){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(typeof(robot.id))
-        console.log(robot.id)
         editRobot(value, robot.id);
       };
   return (
