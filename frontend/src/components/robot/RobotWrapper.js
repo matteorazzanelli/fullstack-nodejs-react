@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 import { nanoid } from "@reduxjs/toolkit";
 
+import Request from "../../app/ClientApi";
+
 import RobotForm from './RobotForm'
 import EditRobotForm from './EditRobotForm'
 import Robot from './Robot'
@@ -10,23 +12,28 @@ import './Robot.css'
 
 export default function RobotWrapper() {
 
+  //TODO: retrieve user id by using user email stored in local storage
+
   const [robots, setRobots] = useState([]);
 
-  const addRobot = (robot) => {
+  const addRobot = async (robot) => {
+    const newRobot = { 
+      id: nanoid(), 
+      robot: robot, 
+      favorite: false, 
+      isEditing: false 
+    };
     setRobots([
       ...robots,
-      { 
-        id: nanoid(), 
-        robot: robot, 
-        favorite: false, 
-        isEditing: false 
-      },
+      newRobot
     ]);
-    // write in the DB
+    // write in the DB in robots table and associate it with the user
+    const response = Request.addRobot(newRobot);
   }
 
-  const deleteRobot = (id) => {
+  const deleteRobot = async (id) => {
     setRobots(robots.filter((robot) => robot.id !== id));
+    const response = Request.deleteRobot(id);
   }
 
   const editRobot = (id) => {
@@ -44,6 +51,7 @@ export default function RobotWrapper() {
           {...robot, robot: value, isEditing: !robot.isEditing } : robot
       )
     );
+    const response = Request.editRobot(id, value);
   };
 
   const toggleFavorite = (id) => {
