@@ -49,7 +49,6 @@ export default function Login() {
         const {terms, name, ...objToSend} = values;
         (axios.post('http://localhost:5000/signin', {"content": objToSend})
           .then(function(response){
-            console.log(values);
             localStorage.setItem('user-info', JSON.stringify(values.email))
             navigate('/home');
             console.log('ok')

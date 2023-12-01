@@ -23,11 +23,10 @@ class GeneralModel {
   }
 
   async select(content, table){
-    console.log(content)
     let keys = Object.keys(content);
     let values = Object.values(content);
     let props = keys.join(' = ? and ') + ' = ?';
-    console.log('GenearlModel : ', props, values);
+    console.log('GeneralModel SELECT : ', props, values);
     try{
       [this.queryResult.rows, this.queryResult.fields] = 
         (await this.connection.query(`SELECT * FROM ${table} WHERE ${props}`, values));
@@ -84,7 +83,7 @@ class GeneralModel {
     let values = Object.values(content);
     let props = "(" + k.join(", ") + ")";
     let placeholder = '('+values.map((item)=>{return '?'})+')';
-    console.log('GenearlModel : ', props, placeholder, values)
+    console.log('GeneralModel INSERT : ', props, placeholder, values)
     try{
       [this.queryResult.rows, this.queryResult.fields] = 
         (await this.connection.execute(
