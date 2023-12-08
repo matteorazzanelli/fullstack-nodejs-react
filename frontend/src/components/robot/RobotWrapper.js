@@ -98,7 +98,7 @@ export default function RobotWrapper({userName}) {
   return (
     <>
       <div className='robot-wrapper'>
-      <h1>List all you robots !</h1>
+      <h1>List all your robots !</h1>
         <RobotForm  addRobot={addRobot} />
         {robots.map((robot) =>
           robot.isEditing ? (
