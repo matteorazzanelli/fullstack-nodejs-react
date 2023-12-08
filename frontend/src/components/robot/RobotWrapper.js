@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { nanoid } from "@reduxjs/toolkit";
 
@@ -9,31 +9,63 @@ import EditRobotForm from './EditRobotForm'
 import Robot from './Robot'
 
 import './Robot.css'
+import { useNavigate } from "react-router-dom";
 
-export default function RobotWrapper() {
+export default function RobotWrapper({userName}) {
 
   //TODO: retrieve user id by using user email stored in local storage
+  const navigate = useNavigate();
 
   const [robots, setRobots] = useState([]);
 
+  useEffect(()=>{
+
+    const fecthRobots = async (userName) => {
+      const result = await Request.getRobots(userName);
+      console.log(result);
+      if(result)
+        setRobots(result.map((item)=>{
+          return {
+            id: item.id_robot,
+            robot: item.name,
+            favorite: item.favorite,
+            isEditing: false
+          }
+        }))
+    }
+
+    if(userName){
+      console.log(userName)
+      fecthRobots(userName)
+    }
+  },[userName]) // only once
+
+
   const addRobot = async (robot) => {
-    const newRobot = { 
-      id: nanoid(), 
-      robot: robot, 
-      favorite: false, 
-      isEditing: false 
-    };
-    setRobots([
-      ...robots,
-      newRobot
-    ]);
-    // write in the DB in robots table and associate it with the user
-    const response = Request.addRobot(newRobot);
+    if(userName===null){
+      alert('Session expired')
+      navigate('/')
+    }
+    else{
+      const newRobot = { 
+        id: nanoid(), 
+        robot: robot, 
+        favorite: false, 
+        isEditing: false 
+      };
+      setRobots([
+        ...robots,
+        newRobot
+      ]);
+      // write in the DB in robots table and associate it with the user
+      Request.addRobot(newRobot, userName);
+    }
+    
   }
 
   const deleteRobot = async (id) => {
     setRobots(robots.filter((robot) => robot.id !== id));
-    const response = Request.deleteRobot(id);
+    Request.deleteRobot(id);
   }
 
   const editRobot = (id) => {
@@ -51,7 +83,7 @@ export default function RobotWrapper() {
           {...robot, robot: value, isEditing: !robot.isEditing } : robot
       )
     );
-    const response = Request.editRobot(id, value);
+    Request.editRobot(id, value);
   };
 
   const toggleFavorite = (id) => {
@@ -60,6 +92,7 @@ export default function RobotWrapper() {
         robot.id === id ? { ...robot, favorite: !robot.favorite } : robot
       )
     );
+    Request.toggleFavorite(id, userName);
   }
 
   return (

@@ -10,7 +10,7 @@ const { GeneralController } = require('./generalController');
 class RobotController extends GeneralController{
 
   listRobots = async (content, res) => {
-    const result = await rm.select(content, 'robots');
+    const result = await rm.select(content);
     console.log('RobotController LIST : ', result)
     this.setCode(result.rows.length > 0 ? 200 : 404);
     this.setSuccess(result.rows.length > 0);
@@ -19,7 +19,7 @@ class RobotController extends GeneralController{
   }
 
   insertRobot = async (content, res) => {
-    const result = await rm.insert(content, 'robots');
+    const result = await rm.insert(content);
     console.log('RobotController INSERT : ', result)
     this.setCode(result.rows.affectedRows > 0 ? 201 : 400);
     this.setSuccess(result.rows.affectedRows > 0);
@@ -39,6 +39,15 @@ class RobotController extends GeneralController{
   deleteRobot = async (id, res) => {
     console.log('RobotController DELETE : ', id);
     const result = await rm.delete(id, 'robots');
+    this.setCode(result.rows.affectedRows>0 ? 200 : 404);
+    this.setSuccess(result.rows.affectedRows>0);
+    this.setContent(result.rows.affectedRows>0 ? result.rows : "Robot not found");
+    return this.renderApi(res);
+  }
+
+  toggleRobot = async (id, content, res) => {
+    console.log('RobotController TOGGLE : ', id);
+    const result = await rm.toggle(id, content);
     this.setCode(result.rows.affectedRows>0 ? 200 : 404);
     this.setSuccess(result.rows.affectedRows>0);
     this.setContent(result.rows.affectedRows>0 ? result.rows : "Robot not found");

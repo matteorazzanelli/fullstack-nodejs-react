@@ -34,6 +34,7 @@ class GeneralModel {
     catch(error){
       this.queryResult.error = error.sqlMessage;
     }
+    console.log(this.queryResult)
     return this.queryResult; 
   }
 

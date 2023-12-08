@@ -7,11 +7,11 @@ const { robotController } = require('../controllers/robotController');
 //middleware to handle req.body
 router.use(express.json());
 
-router.get('/', (req, res) => {
+router.get('/:user', (req, res) => {
   // the variable 'content' also contains the user to which they belong
-  const {content} = req.body; 
-  console.log('RobotRoutes GET : ', content)
-  return robotController.listRobots(content, res);
+  const {user} = req.params; 
+  console.log('RobotRoutes GET : ', user)
+  return robotController.listRobots(user, res);
 })
 
 router.post('/', (req, res) => {
@@ -32,6 +32,13 @@ router.delete('/:id', (req, res) => {
   const {id} = req.params;
   console.log('RobotRoutes DELETE : ', id)
   return robotController.deleteRobot(id, res);
+})
+
+router.patch('/toggle_:id', (req, res) => {
+  const {content} = req.body;
+  const {id} = req.params;
+  console.log('RobotRoutes TOGGLE : ', id)
+  return robotController.toggleRobot(id, content, res);
 })
 
 module.exports = router;
