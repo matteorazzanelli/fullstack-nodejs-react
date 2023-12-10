@@ -1,10 +1,12 @@
 import axios from "axios"; 
 
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+
 class ClientApi {
   constructor(){
     /*axios base*/
     this.api = axios.create({
-      baseURL: "http://localhost:5000/",
+      baseURL: `${BASE_URL}`,
     });
   }
 

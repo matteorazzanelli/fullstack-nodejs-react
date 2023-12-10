@@ -8,6 +8,8 @@ import axios from 'axios'
 import { MdMail, MdPerson2 } from "react-icons/md";
 import { BiSolidLockAlt } from "react-icons/bi";
 
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+
 export default function Login() {
 
   const [action, setAction] = useState('Sign Up');
@@ -35,7 +37,7 @@ export default function Login() {
     if(action === 'Sign Up'){
       if(tmpErrors.name==='' && tmpErrors.email==='' && tmpErrors.password==='' && tmpErrors.terms===''){ 
         const {terms, ...objToSend} = values;
-        (axios.post('http://localhost:5000/signup', {"content": objToSend})
+        (axios.post(`${BASE_URL}/signup`, {"content": objToSend})
           .then(function(response){
             setAction('Sign In');
             console.log('ok')
@@ -47,7 +49,7 @@ export default function Login() {
     else{
       if(tmpErrors.email === '' && tmpErrors.password === ''){
         const {terms, name, ...objToSend} = values;
-        (axios.post('http://localhost:5000/signin', {"content": objToSend})
+        (axios.post(`${BASE_URL}/signin`, {"content": objToSend})
           .then(function(response){
             localStorage.setItem('user-info', JSON.stringify(values.email))
             navigate('/home');
