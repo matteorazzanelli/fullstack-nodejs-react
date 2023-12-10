@@ -8,4 +8,4 @@ app.use(routes);
 
 // start listen to port 5000
 require('dotenv').config({ path: '.env' });
-const server = app.listen(process.env.MYSQLPORT, 'https://cheery-mermaid-5c4862.netlify.app/');
+const server = app.listen(process.env.MYSQLPORT, '127.0.0.1');
