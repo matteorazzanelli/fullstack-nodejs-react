@@ -5,11 +5,12 @@ router.use(cors());
 
 const userRoutes = require('./userRoutes');
 const robotRoutes = require('./robotRoutes');
+const testRoutes = require('./testRoutes');
 
 // using specific routes middleware for products and users
 router
   .use('/', userRoutes)
   .use('/robots', robotRoutes)
-  .get('/products', ()=>{console.log('not available')});
+  .get('/test', testRoutes);
 
 module.exports = router;
