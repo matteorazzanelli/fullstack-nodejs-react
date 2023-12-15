@@ -9,8 +9,8 @@ const testRoutes = require('./testRoutes');
 
 // using specific routes middleware for products and users
 router
-  .use('/', userRoutes)
+  .use('/users', userRoutes)
   .use('/robots', robotRoutes)
-  .get('/test', testRoutes);
+  .use('/', testRoutes);
 
 module.exports = router;
