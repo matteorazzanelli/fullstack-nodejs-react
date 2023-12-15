@@ -10,6 +10,14 @@ class ClientApi {
     });
   }
 
+  async testBackend(){
+    console.log('TEST START')
+    const result = await this.api.get('/');
+    console.log(result);
+    console.log('TEST END');
+    return;
+  }
+
   async getRobots(user){
     console.log(user)
     return (await this.api.get(
