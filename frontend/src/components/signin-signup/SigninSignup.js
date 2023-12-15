@@ -37,7 +37,7 @@ export default function Login() {
     if(action === 'Sign Up'){
       if(tmpErrors.name==='' && tmpErrors.email==='' && tmpErrors.password==='' && tmpErrors.terms===''){ 
         const {terms, ...objToSend} = values;
-        (axios.post(`${BASE_URL}/signup`, {"content": objToSend})
+        (axios.post(`${BASE_URL}/users/signup`, {"content": objToSend})
           .then(function(response){
             setAction('Sign In');
             console.log('ok')
@@ -49,7 +49,7 @@ export default function Login() {
     else{
       if(tmpErrors.email === '' && tmpErrors.password === ''){
         const {terms, name, ...objToSend} = values;
-        (axios.post(`${BASE_URL}/signin`, {"content": objToSend})
+        (axios.post(`${BASE_URL}/users/signin`, {"content": objToSend})
           .then(function(response){
             localStorage.setItem('user-info', JSON.stringify(values.email))
             navigate('/home');
