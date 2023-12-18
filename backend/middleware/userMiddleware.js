@@ -7,6 +7,7 @@ const salt = process.env.CRYPTO_SALT;
 
 const userMiddleware = (req, res, next) => {
   const {content} = req.body;
+  console.log(req.body, salt, process.env.CRYPTO_SALT)
   const hash = bcrypt.hashSync(content.password, salt);
   req.body.content.password = hash;
   next();
